@@ -1,0 +1,3 @@
+# The folders which do not need to be uploaded
+environment/
+__pycache__/
