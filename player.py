@@ -4,17 +4,12 @@ class player():
         self.name = name
         self.current_hand =  []
         self.current_total = 0
+        self.player_In = True
         pass
 
     def hit(self, card):
         self.turn += 1
         self.current_hand.append(card)
-
-    def double_down(self):
-        pass
-
-    def split_cards(self):
-        pass
 
     def show_cards(self):
         print("Your Cards are: ")
@@ -22,9 +17,13 @@ class player():
             print(card)
         print("\n")
 
+    def set_in(self):
+        self.player_In = not (self.player_In)
+
     def total(self):
+        self.current_total = 0
         for card in self.current_hand:
-            print(card[0])
+            # print(card[0])
             denomination = card[0]
             if denomination == '2':
                 self.current_total += 2
