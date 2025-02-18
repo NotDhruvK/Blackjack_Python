@@ -17,8 +17,12 @@ class player():
             print(card)
         print("\n")
 
-    def set_in(self):
-        self.player_In = not (self.player_In)
+    def set_in_true(self):
+        self.player_In = True
+
+    def set_in_false(self):
+        self.player_In = False
+
 
     def total(self):
         self.current_total = 0

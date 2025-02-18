@@ -6,22 +6,16 @@ import dealer
 def check_winner(player_total, dealer_total):
     if player_total == dealer_total:
         return "Draw"
-    
     if player_total == 21:
         return "Player"
-    
     if dealer_total == 21:
         return "Dealer"
-    
     if(player_total > 21):
         return "Dealer"
-    
     if (dealer_total > 21):
         return "Player"
-    
     if ((player_total > dealer_total) and (player_total < 22)):
         return "Player"
-
     if ((player_total < dealer_total) and (dealer_total < 22)):
         return "Dealer" 
     
@@ -37,6 +31,7 @@ if __name__ == "__main__":
 
     choice = "start"
     while(choice.lower() != "quit"):
+        print("Starting a new game.")
         # Deal the first two cards
         print()
         card = deck.deal_card()
@@ -48,8 +43,6 @@ if __name__ == "__main__":
         card = deck.deal_card()
         Hans.hit(card)
 
-        player_total = Dhruv.total()
-        dealer_total = Hans.total()
         Dhruv.show_cards()
         Hans.show_cards()
 
@@ -69,16 +62,18 @@ if __name__ == "__main__":
                 continue
 
             elif choice.lower() == "stay":
-                Dhruv.set_in()
+                Dhruv.set_in_false()
                 Hans.show_revealed_cards()
+                player_total = Dhruv.total()
 
                 while(Hans.current_total < 16):
-                    print(Hans.current_total)
                     print("Dealer will take another card")
                     card = deck.deal_card()
                     Hans.hit(card)
-                    Hans.total()
+                    Hans.current_total = Hans.total()
+                    dealer_total = Hans.current_total
                     Hans.show_revealed_cards()
+                    # print(Hans.current_total)
                 
                 winner = check_winner(player_total, dealer_total)
                 if winner == "draw":
@@ -95,14 +90,16 @@ if __name__ == "__main__":
                 Dhruv.hit(card)
                 Dhruv.show_cards()
                 
-                Dhruv.set_in()
+                Dhruv.set_in_false()
                 Hans.show_revealed_cards()
+                player_total = Dhruv.total()
 
                 while(Hans.current_total < 16):
                     print("Dealer will take another card")
                     card = deck.deal_card()
                     Hans.hit(card)
-                    Hans.total()
+                    Hans.current_total = Hans.total()
+                    dealer_total = Hans.current_total
                     Hans.show_revealed_cards()
                 
                 winner = check_winner(player_total, dealer_total)
@@ -112,23 +109,28 @@ if __name__ == "__main__":
                 break
 
         choice = input("Would you like to play again?: ").lower()
-        if choice == "yes":
-            Dhruv.set_in()
-            Hans.set_in()
-            choice2 = input("Restack the deck?: ").lower()
-            if choice2 == "yes":
-                deck.restack_deck()
-                Dhruv.current_hand = []
-                Hans.current_hand = []
-                Dhruv.current_total = 0
-                Hans.current_total = 0
-                continue
-            elif choice2 == "no":
-                deck.shuffle_deck(2)
-                Dhruv.current_hand = []
-                Hans.current_hand = []
-                continue
+        while (True):
+            if choice == "yes":
+                Dhruv.set_in_true()
+                Hans.set_in_true()
+                choice2 = input("Restack the deck?: ").lower()
+                if choice2 == "yes":
+                    deck.restack_deck()
+                    Dhruv.current_hand = []
+                    Hans.current_hand = []
+                    Dhruv.current_total = 0
+                    Hans.current_total = 0
+                    break
+                elif choice2 == "no":
+                    deck.shuffle_deck(2)
+                    Dhruv.current_hand = []
+                    Hans.current_hand = []
+                    break
 
-        elif choice == "no":
-            print(f"Thanks for playing. You won blank ")
-            break
+            elif choice == "no":
+                print(f"Thanks for playing. You won blank ")
+                choice = "quit"
+                break
+
+            else:
+                print("I do not understand that. Please try again.")
